@@ -18,14 +18,16 @@
     "browser",
     "internet-info",
     "connection-speed",
+    "download-speed",
     "connection-type"
   ],
   "scripts": {
+    "mkdir": "mkdir -p build && mkdir -p minified",
     "clean": "rm -rf build && rm -rf minified",
-    "prebuild": "yarn run clean",
+    "prebuild": "yarn run clean && yarn run mkdir",
     "build": "babel --plugins 'transform-es2015-modules-umd' src --out-dir ./build",
-    "postbuild": "minify build -d minified",
-    "prepublish": "yarn run clean && yarn run build",
+    "postbuild": "browserify ./build/index.js --standalone getNetInfo > ./minified/index.js",
+    "prepublish": "yarn run build",
     "lint": "eslint ./src",
     "lintfix": "eslint ./src --fix"
   },
@@ -33,11 +35,11 @@
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.1",
-    "babel-minify": "^0.2.0",
     "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
     "babel-polyfill": "^6.26.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
+    "browserify": "^14.5.0",
     "eslint": "^4.9.0",
     "eslint-plugin-babel": "^4.1.2"
   }

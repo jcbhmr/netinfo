@@ -7,4 +7,5 @@
 .babelrc
 .eslintrc
 npm-debug.log
-lib
+src
+yarn.lock

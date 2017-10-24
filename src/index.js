@@ -36,4 +36,4 @@ if (isNetInfoAPISupported) {
     navigator.connection.addEventListener('change', _updateNetInfo);
 }
 
-export default () => netInfo;
+module.exports = () => netInfo;

@@ -7,7 +7,9 @@ This package uses [Expanded Network API](https://wicg.github.io/netinfo/) and cu
 ## Usage
 ```javascript
 import getNetInfo from 'netinfo';
+// Other options ;)
 // let getNetInfo = require('netinfo').default;
+// <script src="./minified/index.js"></script>
 
 /** 
 * Calling `getNetInfo()` returns current network connection details of device as object
