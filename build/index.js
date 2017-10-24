@@ -102,7 +102,6 @@
      */
     var addListener = function addListener(cb) {
         if (typeof cb === 'function') {
-
             var hasSameListener = listeners.some(function (l) {
                 return l === cb;
             });
