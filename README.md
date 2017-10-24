@@ -4,6 +4,17 @@ Get network connection details of device in browser using navigator.connection A
  
 This package uses [Expanded Network API](https://wicg.github.io/netinfo/) and currently supported in latest version of chrome. 
 
+# Installation
+- NPM
+```sh
+npm install netinfo
+```
+
+- Yarn
+```sh
+yarn add netinfo
+```
+
 ## Usage
 ```javascript
 import getNetInfo from 'netinfo';
