@@ -14,9 +14,10 @@ const ignoreProperties = [
     'dispatchEvent',
 ];
 let netInfo = {};
+let listeners = [];
 
 if (isNetInfoAPISupported) {
-    const _updateNetInfo = () => {
+    const _updateNetInfo = (e) => {
         const info = navigator.connection;
         netInfo = {};
 
@@ -28,6 +29,12 @@ if (isNetInfoAPISupported) {
             }
         }
 
+        // Prevent calling callback on initial update,
+        // only call when there is change event
+        if (e) {
+            listeners.map(cb => cb(netInfo));
+        }
+
         return netInfo;
     };
 
@@ -36,4 +43,64 @@ if (isNetInfoAPISupported) {
     navigator.connection.addEventListener('change', _updateNetInfo);
 }
 
-module.exports = () => netInfo;
+/**
+ * Remove listener
+ *
+ * @function
+ * @param {Function} cb Listener callback to be removed
+ *
+ * @returns {Boolean} Listener remove status
+ */
+const removeListener = (cb) => {
+    let matched = false;
+
+    listeners = listeners.filter(l => {
+        if (l === cb) {
+            matched = true;
+            return false;
+        }
+
+        return true;
+    });
+
+    return matched;
+};
+
+/**
+ * Store listener
+ *
+ * @function
+ * @param {Function} cb Listener callback to be added
+ *
+ * @returns {Boolean} Listener attach status
+ */
+const addListener = (cb) => {
+    if (typeof cb === 'function') {
+        let hasSameListener = listeners.some(l => l === cb);
+
+        if (!hasSameListener) {
+            listeners.push(cb);
+        }
+
+        return true;
+    }
+
+    return false;
+};
+
+/**
+ * Get current net info
+ *
+ * @function
+ * @returns {Object} Net info object
+ */
+const getNetInfo = () => {
+    return {
+        ...netInfo,
+        addListener,
+        removeListener
+    };
+};
+
+module.exports = getNetInfo;
+

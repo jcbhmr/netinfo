@@ -1,6 +1,6 @@
 {
   "name": "netinfo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "build",
   "description": "Get network connection details of device in browser",
   "repository": {
@@ -24,9 +24,11 @@
   "scripts": {
     "mkdir": "mkdir -p build && mkdir -p minified",
     "clean": "rm -rf build && rm -rf minified",
+    "uglify": "uglifyjs minified/index.js -o minified/index.js",
+    "browserify": "browserify ./build/index.js --standalone getNetInfo > ./minified/index.js",
     "prebuild": "yarn run clean && yarn run mkdir",
     "build": "babel --plugins 'transform-es2015-modules-umd' src --out-dir ./build",
-    "postbuild": "browserify ./build/index.js --standalone getNetInfo > ./minified/index.js",
+    "postbuild": "yarn run browserify && yarn run uglify",
     "prepublish": "yarn run build",
     "lint": "eslint ./src",
     "lintfix": "eslint ./src --fix"
@@ -41,6 +43,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "browserify": "^14.5.0",
     "eslint": "^4.9.0",
-    "eslint-plugin-babel": "^4.1.2"
+    "eslint-plugin-babel": "^4.1.2",
+    "uglify-js": "^3.1.5"
   }
 }

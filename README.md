@@ -19,7 +19,7 @@ yarn add netinfo
 ```javascript
 import getNetInfo from 'netinfo';
 // Other options ;)
-// let getNetInfo = require('netinfo').default;
+// let getNetInfo = require('netinfo');
 // <script src="./minified/index.js"></script>
 
 /** 
@@ -32,9 +32,19 @@ import getNetInfo from 'netinfo';
 *   type: "wifi"
 * }
 */
-getNetInfo();
+const currentNetInfo = getNetInfo();
+
+// Optionally you can listen to net info changes
+// This callback will be called when there is change in net info
+let onNetInfoChange = (newNetInfo) => {
+    // Do something here
+};
+currentNetInfo.addListener(onNetInfoChange);
+// Somewhere later in code, Remove net info change listener callback
+currentNetInfo.removeListener(onNetInfoChange);
 
 ```
+
 ## License
 
 MIT © [Ganapati V S](http://meetguns.com)
