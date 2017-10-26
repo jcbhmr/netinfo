@@ -39,9 +39,9 @@ const currentNetInfo = getNetInfo();
 let onNetInfoChange = (newNetInfo) => {
     // Do something here
 };
-currentNetInfo.addListener(onNetInfoChange);
+currentNetInfo.addChangeListener(onNetInfoChange);
 // Somewhere later in code, Remove net info change listener callback
-currentNetInfo.removeListener(onNetInfoChange);
+currentNetInfo.removeChangeListener(onNetInfoChange);
 
 ```
 

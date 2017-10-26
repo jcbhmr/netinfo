@@ -1,6 +1,6 @@
 {
   "name": "netinfo",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "build",
   "description": "Get network connection details of device in browser",
   "repository": {

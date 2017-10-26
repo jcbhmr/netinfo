@@ -13,26 +13,92 @@ const ignoreProperties = [
     'removeEventListener',
     'dispatchEvent',
 ];
-let netInfo = {};
-let listeners = [];
+
+class ConnectionInfo {
+    constructor() {
+        this.supported = isNetInfoAPISupported;
+        ConnectionInfo.storeInfoReference(this);
+    }
+
+    static changeListeners = [];
+    static keys = [];
+    static storeInfoReference = (info) => ConnectionInfo.ref = info;
+    static add(key, val) {
+        ConnectionInfo.keys.push(key);
+        ConnectionInfo.ref[key] = val;
+    }
+
+    static clean() {
+        ConnectionInfo.keys.map(k => delete ConnectionInfo.ref[k]);
+        ConnectionInfo.keys = [];
+    }
+
+    /**
+     * Add info change listener
+     *
+     * @function
+     * @param {Function} cb Listener callback to be added
+     *
+     * @returns {Boolean} Listener attach status
+     */
+    addChangeListener = (cb) => {
+        if (typeof cb === 'function') {
+            let hasSameListener = ConnectionInfo.changeListeners.some(l => l === cb);
+
+            if (!hasSameListener) {
+                ConnectionInfo.changeListeners.push(cb);
+            }
+
+            return true;
+        }
+
+        return false;
+    };
+
+    /**
+     * Remove info change listener
+     *
+     * @function
+     * @param {Function} cb Listener callback to be removed
+     *
+     * @returns {Boolean} Listener remove status
+     */
+    removeChangeListener = (cb) => {
+        let matched = false;
+
+        ConnectionInfo.changeListeners = ConnectionInfo.changeListeners.filter(l => {
+            if (l === cb) {
+                matched = true;
+                return false;
+            }
+
+            return true;
+        });
+
+        return matched;
+    };
+}
+
+let netInfo = new ConnectionInfo();
 
 if (isNetInfoAPISupported) {
     const _updateNetInfo = (e) => {
         const info = navigator.connection;
-        netInfo = {};
+        ConnectionInfo.clean();
 
         for (let p in info) {
             // Not checking for hasOwnProperty as it always returns false
             // for `NetworkInformation` instance
+            // Push only keys with value
             if (!ignoreProperties.includes(p)) {
-                netInfo[p] = info[p];
+                ConnectionInfo.add(p, info[p]);
             }
         }
 
         // Prevent calling callback on initial update,
         // only call when there is change event
         if (e) {
-            listeners.map(cb => cb(netInfo));
+            ConnectionInfo.changeListeners.map(cb => cb(netInfo));
         }
 
         return netInfo;
@@ -44,63 +110,12 @@ if (isNetInfoAPISupported) {
 }
 
 /**
- * Remove listener
- *
- * @function
- * @param {Function} cb Listener callback to be removed
- *
- * @returns {Boolean} Listener remove status
- */
-const removeListener = (cb) => {
-    let matched = false;
-
-    listeners = listeners.filter(l => {
-        if (l === cb) {
-            matched = true;
-            return false;
-        }
-
-        return true;
-    });
-
-    return matched;
-};
-
-/**
- * Store listener
- *
- * @function
- * @param {Function} cb Listener callback to be added
- *
- * @returns {Boolean} Listener attach status
- */
-const addListener = (cb) => {
-    if (typeof cb === 'function') {
-        let hasSameListener = listeners.some(l => l === cb);
-
-        if (!hasSameListener) {
-            listeners.push(cb);
-        }
-
-        return true;
-    }
-
-    return false;
-};
-
-/**
  * Get current net info
  *
  * @function
  * @returns {Object} Net info object
  */
-const getNetInfo = () => {
-    return {
-        ...netInfo,
-        addListener,
-        removeListener
-    };
-};
+const getNetInfo = () => netInfo;
 
 module.exports = getNetInfo;
 

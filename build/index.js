@@ -13,19 +13,29 @@
 })(this, function (module) {
     'use strict';
 
-    var _extends = Object.assign || function (target) {
-        for (var i = 1; i < arguments.length; i++) {
-            var source = arguments[i];
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
+        }
+    }
 
-            for (var key in source) {
-                if (Object.prototype.hasOwnProperty.call(source, key)) {
-                    target[key] = source[key];
-                }
+    var _createClass = function () {
+        function defineProperties(target, props) {
+            for (var i = 0; i < props.length; i++) {
+                var descriptor = props[i];
+                descriptor.enumerable = descriptor.enumerable || false;
+                descriptor.configurable = true;
+                if ("value" in descriptor) descriptor.writable = true;
+                Object.defineProperty(target, descriptor.key, descriptor);
             }
         }
 
-        return target;
-    };
+        return function (Constructor, protoProps, staticProps) {
+            if (protoProps) defineProperties(Constructor.prototype, protoProps);
+            if (staticProps) defineProperties(Constructor, staticProps);
+            return Constructor;
+        };
+    }();
 
     /**
      * Get network connection details of device in browser using Expanded Network API.
@@ -37,26 +47,92 @@
      * */
     var isNetInfoAPISupported = !!(navigator && navigator.connection);
     var ignoreProperties = ['onchange', 'addEventListener', 'removeEventListener', 'dispatchEvent'];
-    var netInfo = {};
-    var listeners = [];
+
+    var ConnectionInfo = function () {
+        function ConnectionInfo() {
+            _classCallCheck(this, ConnectionInfo);
+
+            this.addChangeListener = function (cb) {
+                if (typeof cb === 'function') {
+                    var hasSameListener = ConnectionInfo.changeListeners.some(function (l) {
+                        return l === cb;
+                    });
+
+                    if (!hasSameListener) {
+                        ConnectionInfo.changeListeners.push(cb);
+                    }
+
+                    return true;
+                }
+
+                return false;
+            };
+
+            this.removeChangeListener = function (cb) {
+                var matched = false;
+
+                ConnectionInfo.changeListeners = ConnectionInfo.changeListeners.filter(function (l) {
+                    if (l === cb) {
+                        matched = true;
+                        return false;
+                    }
+
+                    return true;
+                });
+
+                return matched;
+            };
+
+            this.supported = isNetInfoAPISupported;
+            ConnectionInfo.storeInfoReference(this);
+        }
+
+        _createClass(ConnectionInfo, null, [{
+            key: 'add',
+            value: function add(key, val) {
+                ConnectionInfo.keys.push(key);
+                ConnectionInfo.ref[key] = val;
+            }
+        }, {
+            key: 'clean',
+            value: function clean() {
+                ConnectionInfo.keys.map(function (k) {
+                    return delete ConnectionInfo.ref[k];
+                });
+                ConnectionInfo.keys = [];
+            }
+        }]);
+
+        return ConnectionInfo;
+    }();
+
+    ConnectionInfo.changeListeners = [];
+    ConnectionInfo.keys = [];
+
+    ConnectionInfo.storeInfoReference = function (info) {
+        return ConnectionInfo.ref = info;
+    };
+
+    var netInfo = new ConnectionInfo();
 
     if (isNetInfoAPISupported) {
         var _updateNetInfo = function _updateNetInfo(e) {
             var info = navigator.connection;
-            netInfo = {};
+            ConnectionInfo.clean();
 
             for (var p in info) {
                 // Not checking for hasOwnProperty as it always returns false
                 // for `NetworkInformation` instance
+                // Push only keys with value
                 if (!ignoreProperties.includes(p)) {
-                    netInfo[p] = info[p];
+                    ConnectionInfo.add(p, info[p]);
                 }
             }
 
             // Prevent calling callback on initial update,
             // only call when there is change event
             if (e) {
-                listeners.map(function (cb) {
+                ConnectionInfo.changeListeners.map(function (cb) {
                     return cb(netInfo);
                 });
             }
@@ -70,63 +146,13 @@
     }
 
     /**
-     * Remove listener
-     *
-     * @function
-     * @param {Function} cb Listener callback to be removed
-     *
-     * @returns {Boolean} Listener remove status
-     */
-    var removeListener = function removeListener(cb) {
-        var matched = false;
-
-        listeners = listeners.filter(function (l) {
-            if (l === cb) {
-                matched = true;
-                return false;
-            }
-
-            return true;
-        });
-
-        return matched;
-    };
-
-    /**
-     * Store listener
-     *
-     * @function
-     * @param {Function} cb Listener callback to be added
-     *
-     * @returns {Boolean} Listener attach status
-     */
-    var addListener = function addListener(cb) {
-        if (typeof cb === 'function') {
-            var hasSameListener = listeners.some(function (l) {
-                return l === cb;
-            });
-
-            if (!hasSameListener) {
-                listeners.push(cb);
-            }
-
-            return true;
-        }
-
-        return false;
-    };
-
-    /**
      * Get current net info
      *
      * @function
      * @returns {Object} Net info object
      */
     var getNetInfo = function getNetInfo() {
-        return _extends({}, netInfo, {
-            addListener: addListener,
-            removeListener: removeListener
-        });
+        return netInfo;
     };
 
     module.exports = getNetInfo;
