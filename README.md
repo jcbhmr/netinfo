@@ -4,6 +4,16 @@ Get network connection details of device in browser using navigator.connection A
  
 This package uses [Expanded Network API](https://wicg.github.io/netinfo/) and currently supported in latest version of chrome. 
 
+[![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
+[![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ganapativs/netInfo/)
+
+[![Dependency Status](https://david-dm.org/netinfo/badges.svg)](https://david-dm.org/netinfo/badges)
+[![devDependency Status](https://david-dm.org/netinfo/badges/dev-status.svg)](https://david-dm.org/netinfo/badges#info=devDependencies)
+
+[![npm version](https://badge.fury.io/js/netinfo.svg)](https://badge.fury.io/js/netinfo)
+[![GitHub version](https://badge.fury.io/gh/ganapativs%2Fnetinfo.svg)](https://badge.fury.io/gh/ganapativs%2Fnetinfo)
+[![Bower version](https://badge.fury.io/bo/netinfo.svg)](https://badge.fury.io/bo/netinfo)
+
 # Installation
 - NPM
 ```sh
@@ -48,3 +58,7 @@ currentNetInfo.removeChangeListener(onNetInfoChange);
 ## License
 
 MIT © [Ganapati V S](http://meetguns.com)
+
+[![forthebadge](http://forthebadge.com/badges/uses-js.svg)](http://forthebadge.com)
+[![forthebadge](http://forthebadge.com/badges/kinda-sfw.svg)](http://forthebadge.com)
+
