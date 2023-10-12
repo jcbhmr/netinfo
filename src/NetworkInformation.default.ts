@@ -1,25 +1,31 @@
 import ConnectionType from "./ConnectionType.js";
 import EffectiveConnectionType from "./EffectiveConnectionType.js";
+import Megabit from "./Megabit.js";
+import Millisecond from "./Millisecond.js";
+import fetchNetStats from "./lib/fetchNetStats.js";
+
+let {type, effectiveType, downlinkMax, downlink, rtt } = await fetchNetStats()
+setTimeout(async function f() {
+  ({type, effectiveType, downlinkMax, downlink, rtt } = await fetchNetStats())
+  setTimeout(f, Math.random() * 10000 + 5000)
+}, Math.random() * 10000 + 5000)
 
 const eventHandlers = new WeakMap<any, { onchange: EventListener | null }>();
-
 class NetworkInformation extends EventTarget {
   get type(): ConnectionType {
-    return getType();
+    return type;
   }
   get effectiveType(): EffectiveConnectionType {
-    return getEffectiveType();
+    return effectiveType;
   }
   get downlinkMax(): Megabit {
-    return getDownlinkMax();
+    return downlinkMax
   }
-  // readonly attribute Megabit downlink;
   get downlink(): Megabit {
-    return getDownlink();
+    return downlink
   }
-  // readonly attribute Millisecond rtt;
   get rtt(): Millisecond {
-    return getRTT();
+    return rtt;
   }
   get onchange(): EventListener | null {
     return eventHandlers.get(this)?.onchange ?? null;

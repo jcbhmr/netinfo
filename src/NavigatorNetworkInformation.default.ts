@@ -1,7 +1,6 @@
 import NetworkInformation from "./NetworkInformation.default.js";
 
 const connection = new WeakMap<any, NetworkInformation>();
-
 const NavigatorNetworkInformation = {
   prototype: {
     get connection(): NetworkInformation {
