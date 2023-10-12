@@ -5,7 +5,7 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   resolve: {
     alias: {
-      "#lib/doFetchingSync.js": "./src/lib/doFetchingSync.node.ts",
+      "#lib/getFetchStatsSync.js": "./src/lib/getFetchStatsSync.node.ts",
     },
   },
 });

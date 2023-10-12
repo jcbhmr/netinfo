@@ -10,7 +10,7 @@
     "strict": false,
     "skipLibCheck": true,
     "paths": {
-      "#lib/doFetchingSync.js": ["./src/lib/doFetchingSync.default.js"]
+      "#lib/getFetchStatsSync.js": ["./src/lib/getFetchStatsSync.default.js"]
     }
   },
   "include": ["src"],
