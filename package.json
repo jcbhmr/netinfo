@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "type": "module",
   "imports": {
-    "#lib/doFetchingSync.js": {
-      "node": "./lib/doFetchingSync.node.js",
-      "default": "./lib/doFetchingSync.default.js"
+    "#lib/getFetchStatsSync.js": {
+      "node": "./dist/lib/getFetchStatsSync.node.js",
+      "default": "./dist/lib/getFetchStatsSync.default.js"
     }
   },
   "exports": {
@@ -40,14 +40,14 @@
     "docs:preview": "http-server -c-1 docs",
     "format": "prettier -w .",
     "lint": "tsc --noEmit",
-    "test": "vitest"
+    "pretest": "npm run build",
+    "test": "node --test"
   },
   "devDependencies": {
     "@types/node": "^20.8.4",
     "http-server": "^14.1.1",
     "prettier": "^3.0.3",
     "typedoc": "^0.25.2",
-    "typescript": "^5.2.2",
-    "vitest": "^0.34.6"
+    "typescript": "^5.2.2"
   }
 }

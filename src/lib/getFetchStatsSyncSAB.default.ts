@@ -4,7 +4,7 @@ let worker: Worker | undefined;
 let workerTimeout: ReturnType<typeof setTimeout> | undefined;
 function getFetchStatsSyncSAB(url: string): FetchStats {
   worker ??= new Worker(
-    new URL("./getFetchStatsSyncSAB-worker.default.js", import.meta.url),
+    new URL("./getFetchStatsSyncSAB-worker.js", import.meta.url),
     { type: "module" }
   );
   clearTimeout(workerTimeout);
@@ -22,9 +22,9 @@ function getFetchStatsSyncSAB(url: string): FetchStats {
   worker.postMessage({ lockBuffer, dataBuffer, url });
   Atomics.wait(lockInt32, 0, 0);
 
-  const [headTime, getTime, getContentLength] = dataUint32;
+  const [headTime, getTime, getLength] = dataUint32;
 
-  return { headTime, getTime, getContentLength };
+  return { headTime, getTime, getLength };
 }
 
 export default getFetchStatsSyncSAB;
