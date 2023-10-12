@@ -1,6 +1,6 @@
 /**
- * Initiate an async getFetchStats() call. If the current environment doesn't support either sync XHR or SAB, wait for
- * the async getFetchStats() call to finish.
+ * Initiate an async getFetchStats() call. If the current environment doesn't support either sync XHR or main-thread
+ * Atomics.wait() & SAB, wait for the async getFetchStats() call to finish.
  *
  * When a property is accessed, if the getFetchStats() call hasn't finished, run a sync XHR or SAB getFetchStats() call.
  */
@@ -12,6 +12,14 @@ import Millisecond from "./Millisecond.js";
 import doFetching from "./lib/doFetching.js";
 import doFetchingSync from "#lib/doFetchingSync.js";
 import doGuessing from "./lib/doGuessing.js";
+
+let supportsAtomicsWaitOnThisThread = false;
+try {
+  const buffer = new SharedArrayBuffer(4);
+  const view = new Int32Array(buffer);
+  Atomics.wait(view, 0, 1);
+  supportsAtomicsWaitOnThisThread = true;
+} catch {}
 
 let guess: {
   type: ConnectionType;
