@@ -1,7 +1,7 @@
 interface FetchStats {
   headTime: number;
   getTime: number;
-  getContentLength: number;
+  getLength: number;
 }
 
 async function getFetchStats(url: string): Promise<FetchStats> {
@@ -14,30 +14,28 @@ async function getFetchStats(url: string): Promise<FetchStats> {
     });
     const end = performance.now();
     headTime = Math.round(end - start);
-  } catch {}
+  } catch (error) {
+    console.debug(error);
+  }
 
   let getTime = 0;
-  let getContentLength = 0;
+  let getLength = 0;
   try {
-    const controller = new AbortController();
-    const start = performance.now();
     const response = await fetch(url, {
       method: "GET",
       cache: "no-cache",
-      signal: controller.signal,
     });
-    const contentLength = response.headers.get("Content-Length");
-    if (contentLength) {
-      const buffer = await response.arrayBuffer();
-      const end = performance.now();
-      getTime = Math.round(end - start);
-      getContentLength = parseInt(contentLength) || 0;
-    } else {
-      controller.abort();
-    }
-  } catch {}
+    const start = performance.now();
+    const buffer = await response.arrayBuffer();
+    const end = performance.now();
+    getTime = Math.round(end - start);
+    getLength =
+      parseInt(response.headers.get("Content-Length")) || buffer.byteLength;
+  } catch (error) {
+    console.debug(error);
+  }
 
-  return { headTime, getTime, getContentLength };
+  return { headTime, getTime, getLength };
 }
 
 export default getFetchStats;

@@ -10,7 +10,7 @@ globalThis.addEventListener("message", async (event) => {
     const fetchStats = await getFetchStats(url);
     dataUint32[0] = fetchStats.headTime;
     dataUint32[1] = fetchStats.getTime;
-    dataUint32[2] = fetchStats.getContentLength;
+    dataUint32[2] = fetchStats.getLength;
 
     Atomics.store(lockInt32, 0, 1);
     Atomics.notify(lockInt32, 0);

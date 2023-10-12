@@ -4,14 +4,18 @@ import { FetchStats } from "./getFetchStats.js";
 let worker: Worker | undefined;
 let workerTimeout: ReturnType<typeof setTimeout> | undefined;
 function getFetchStatsSync(url: string): FetchStats {
-  worker ??= new Worker(
-    new URL("./getFetchStatsSync-worker.js", import.meta.url)
-  );
+  if (!worker) {
+    worker = new Worker(
+      new URL("./getFetchStatsSync-worker.js", import.meta.url)
+    );
+    worker.unref();
+  }
   clearTimeout(workerTimeout);
   workerTimeout = setTimeout(() => {
     worker.terminate();
     worker = undefined;
   }, 5000);
+  workerTimeout.unref?.();
 
   const lockBuffer = new SharedArrayBuffer(4);
   const lockInt32 = new Int32Array(lockBuffer);

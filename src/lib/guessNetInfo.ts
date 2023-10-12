@@ -12,11 +12,7 @@ interface NetInfo {
   rtt: Millisecond;
 }
 
-function guessNetInfo({
-  headTime,
-  getTime,
-  getContentLength,
-}: FetchStats): NetInfo {
+function guessNetInfo({ headTime, getTime, getLength }: FetchStats): NetInfo {
   let rtt: Millisecond;
   if (headTime) {
     rtt = Math.round(headTime / 25) * 25;
@@ -39,10 +35,10 @@ function guessNetInfo({
   }[type];
 
   let downlink: Megabit;
-  if (getTime && getContentLength) {
-    const bytesPerSecond = getContentLength / (getTime / 1000);
+  if (getTime && getLength) {
+    const bytesPerSecond = getLength / (getTime / 1000);
     const downlinkPrecise = bytesPerSecond / 125000;
-    downlink = Math.round(downlinkPrecise);
+    downlink = Math.round(downlinkPrecise / 0.025) * 0.025;
   } else {
     downlink = 0;
   }

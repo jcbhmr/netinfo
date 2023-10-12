@@ -6,23 +6,22 @@ import getFetchStats from "./lib/getFetchStats.js";
 import getFetchStatsSync from "#lib/getFetchStatsSync.js";
 import guessNetInfo, { NetInfo } from "./lib/guessNetInfo.js";
 
+const url = "https://wicg.github.io/netinfo/";
 let guess: NetInfo | undefined;
 (async () => {
   while (true) {
-    const fetchStats = await getFetchStats("https://wicg.github.io/netinfo/");
+    const fetchStats = await getFetchStats(url);
     guess = guessNetInfo(fetchStats);
     await new Promise((r) => {
       const id = setTimeout(r, Math.random() * 10000 + 5000);
       // Node.js-specific
-      // @ts-ignore
-      id.deref?.();
+      id.unref?.();
     });
   }
 })();
-
 function doEnsureGuess() {
   if (!guess) {
-    const fetchStats = getFetchStatsSync("https://wicg.github.io/netinfo/");
+    const fetchStats = getFetchStatsSync(url);
     guess = guessNetInfo(fetchStats);
   }
 }
