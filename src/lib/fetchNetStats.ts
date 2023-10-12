@@ -1,4 +1,4 @@
-import { networkInterfaces } from "os";
+import { networkInterfaces } from "node:os";
 import ConnectionType from "../ConnectionType.js";
 import EffectiveConnectionType from "../EffectiveConnectionType.js";
 import Megabit from "../Megabit.js";
@@ -26,8 +26,7 @@ export default async function fetchNetStats() {
   }
 
   let type: ConnectionType;
-  const interfaces = networkInterfaces()
-  if (interfaces)
+  type = "unknown"
 
   const downlinkMax = {
     "wimax": 200,
@@ -38,7 +37,7 @@ export default async function fetchNetStats() {
     "unknown": +Infinity,
     none: 0,
     other: +Infinity,
-  }[type as any]
+  }[type]
 
   let downlink: Megabit;
   if (buffer) {
@@ -51,6 +50,7 @@ export default async function fetchNetStats() {
   }
 
   let effectiveType: EffectiveConnectionType;
+  effectiveType = "3g"
 
   return { type, effectiveType, downlink, downlinkMax, rtt };
 }
