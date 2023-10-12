@@ -1,11 +1,11 @@
-import { Worker, receiveMessageOnPort } from "node:worker_threads";
 import { FetchStats } from "./getFetchStats.js";
 
 let worker: Worker | undefined;
 let workerTimeout: ReturnType<typeof setTimeout> | undefined;
-function getFetchStatsSync(url: string): FetchStats {
+function getFetchStatsSyncSAB(url: string): FetchStats {
   worker ??= new Worker(
-    new URL("./getFetchStatsSync-worker.js", import.meta.url)
+    new URL("./getFetchStatsSyncSAB-worker.default.js", import.meta.url),
+    { type: "module" }
   );
   clearTimeout(workerTimeout);
   workerTimeout = setTimeout(() => {
@@ -15,15 +15,16 @@ function getFetchStatsSync(url: string): FetchStats {
 
   const lockBuffer = new SharedArrayBuffer(4);
   const lockInt32 = new Int32Array(lockBuffer);
-  const { port1: dataPort, port2: remoteDataPort } = new MessageChannel();
+  const dataBuffer = new SharedArrayBuffer(12);
+  const dataUint32 = new Uint32Array(dataBuffer);
 
   Atomics.store(lockInt32, 0, 0);
-  worker.postMessage({ lockBuffer, dataPort: remoteDataPort, url }, [
-    remoteDataPort as any,
-  ]);
+  worker.postMessage({ lockBuffer, dataBuffer, url });
   Atomics.wait(lockInt32, 0, 0);
 
-  return receiveMessageOnPort(dataPort as any).message;
+  const [headTime, getTime, getContentLength] = dataUint32;
+
+  return { headTime, getTime, getContentLength };
 }
 
-export default getFetchStatsSync;
+export default getFetchStatsSyncSAB;

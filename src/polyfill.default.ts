@@ -11,7 +11,7 @@ declare global {
 
 if (typeof Navigator !== "undefined") {
   const s = Object.getOwnPropertyDescriptors(
-    NavigatorNetworkInformation_,
+    NavigatorNetworkInformation_
   ) as any;
   delete s.name;
   delete s.length;
@@ -19,7 +19,7 @@ if (typeof Navigator !== "undefined") {
   Object.defineProperties(Navigator, s);
 
   const p = Object.getOwnPropertyDescriptors(
-    NavigatorNetworkInformation_.prototype,
+    NavigatorNetworkInformation_.prototype
   ) as any;
   delete p.constructor;
   delete p[Symbol.toStringTag];
@@ -27,7 +27,7 @@ if (typeof Navigator !== "undefined") {
 }
 if (typeof WorkerNavigator !== "undefined") {
   const s = Object.getOwnPropertyDescriptors(
-    NavigatorNetworkInformation_,
+    NavigatorNetworkInformation_
   ) as any;
   delete s.name;
   delete s.length;
@@ -36,7 +36,7 @@ if (typeof WorkerNavigator !== "undefined") {
   Object.defineProperties(WorkerNavigator, s);
 
   const p = Object.getOwnPropertyDescriptors(
-    NavigatorNetworkInformation_.prototype,
+    NavigatorNetworkInformation_.prototype
   ) as any;
   delete p.constructor;
   delete p[Symbol.toStringTag];
