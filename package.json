@@ -1,8 +1,30 @@
 {
+  "name": "@webfill/netinfo",
+  "version": "1.0.0",
   "type": "module",
+  "exports": {
+    ".": {
+      "browser": "./dist/index.browser.js",
+      "default": "./dist/index.default.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "build:docs": "typedoc",
+    "docs:preview": "http-server -c-1 docs",
+    "format": "prettier -w .",
+    "lint": "tsc --noEmit",
+    "test": "vitest"
+  },
   "devDependencies": {
     "@types/node": "^20.8.4",
+    "http-server": "^14.1.1",
     "prettier": "^3.0.3",
-    "typescript": "^5.2.2"
+    "typedoc": "^0.25.2",
+    "typescript": "^5.2.2",
+    "vitest": "^0.34.6"
   }
 }
