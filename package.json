@@ -2,11 +2,34 @@
   "name": "@webfill/netinfo",
   "version": "1.0.0",
   "type": "module",
+  "imports": {
+    "#lib/doFetchingSync.js": {
+      "node": "./lib/doFetchingSync.node.js",
+      "default": "./lib/doFetchingSync.default.js"
+    }
+  },
   "exports": {
     ".": {
-      "browser": "./dist/index.browser.js",
-      "default": "./dist/index.default.js"
-    }
+      "browser": "./dist/polyfill.browser.js",
+      "default": "./dist/polyfill.default.js"
+    },
+    "./NavigatorNetworkInformation.js": {
+      "browser": "./dist/NavigatorNetworkInformation.browser.js",
+      "default": "./dist/NavigatorNetworkInformation.default.js"
+    },
+    "./NetworkInformation.js": {
+      "browser": "./dist/NetworkInformation.browser.js",
+      "default": "./dist/NetworkInformation.default.js"
+    },
+    "./polyfill.js": {
+      "browser": "./dist/polyfill.browser.js",
+      "default": "./dist/polyfill.default.js"
+    },
+    "./ponyfill.js": {
+      "browser": "./dist/ponyfill.browser.js",
+      "default": "./dist/ponyfill.default.js"
+    },
+    "./*.js": "./dist/*.js"
   },
   "files": [
     "dist"

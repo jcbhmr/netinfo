@@ -1,5 +1,7 @@
 import NetworkInformation from "./NetworkInformation.browser.js";
 
-export default interface NavigatorNetworkInformation {
+interface NavigatorNetworkInformation {
   readonly connection: NetworkInformation;
 }
+const NavigatorNetworkInformation = Navigator;
+export default NavigatorNetworkInformation;

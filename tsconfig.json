@@ -8,7 +8,10 @@
     "moduleResolution": "NodeNext",
     "isolatedModules": true,
     "strict": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "#lib/doFetchingSync.js": ["./src/lib/doFetchingSync.default.js"]
+    }
   },
   "include": ["src"],
   "typedocOptions": {
