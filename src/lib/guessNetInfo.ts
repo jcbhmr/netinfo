@@ -20,8 +20,40 @@ function guessNetInfo({ headTime, getTime, getLength }: FetchStats): NetInfo {
     rtt = 0;
   }
 
+  let downlink: Megabit;
+  if (getTime && getLength) {
+    const bytesPerSecond = getLength / (getTime / 1000);
+    const downlinkPrecise = bytesPerSecond / 125000;
+    downlink = Math.round(downlinkPrecise / 0.025) * 0.025;
+  } else {
+    downlink = 0;
+  }
+
+  let effectiveType: EffectiveConnectionType;
+  if (downlink < 1) {
+    effectiveType = "slow-2g";
+  } else if (downlink < 4) {
+    effectiveType = "2g";
+  } else if (downlink < 12) {
+    effectiveType = "3g";
+  } else {
+    effectiveType = "4g";
+  }
+
   let type: ConnectionType;
-  type = "unknown";
+  if (typeof navigator !== "undefined") {
+    if ((navigator as any).userAgentData?.mobile) {
+      type = "cellular";
+    }
+  }
+  if (!type && ["slow-2g", "2g", "3g"].includes(effectiveType)) {
+    type = "cellular";
+  } else {
+    type = "wifi";
+  }
+  if (downlink === 0) {
+    type = "none";
+  }
 
   const downlinkMax = {
     wimax: 200,
@@ -33,18 +65,6 @@ function guessNetInfo({ headTime, getTime, getLength }: FetchStats): NetInfo {
     none: 0,
     other: +Infinity,
   }[type];
-
-  let downlink: Megabit;
-  if (getTime && getLength) {
-    const bytesPerSecond = getLength / (getTime / 1000);
-    const downlinkPrecise = bytesPerSecond / 125000;
-    downlink = Math.round(downlinkPrecise / 0.025) * 0.025;
-  } else {
-    downlink = 0;
-  }
-
-  let effectiveType: EffectiveConnectionType;
-  effectiveType = "3g";
 
   return { type, effectiveType, downlink, downlinkMax, rtt };
 }

@@ -24,7 +24,7 @@ async function getFetchStats(
     if (error?.name === "AbortError") {
       throw error;
     } else {
-      console.debug(error);
+      // console.debug(error);
     }
   }
 
@@ -46,7 +46,7 @@ async function getFetchStats(
     if (error?.name === "AbortError") {
       throw error;
     } else {
-      console.debug(error);
+      // console.debug(error);
     }
   }
 

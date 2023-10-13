@@ -1,43 +1,40 @@
 import test from "node:test";
 import assert from "node:assert";
-import {
-  NavigatorNetworkInformation,
-  NetworkInformation,
-} from "../dist/ponyfill.js";
+import { NavigatorNetworkInformation } from "../dist/ponyfill.js";
 
-/** @type {NavigatorNetworkInformation} */
-let navigator;
-navigator ??= globalThis.navigator;
-navigator ??= Object.create(NavigatorNetworkInformation.prototype);
-navigator.connection ??= Object.create(NetworkInformation.prototype);
+const navigatorConnection = Reflect.get(
+  NavigatorNetworkInformation.prototype,
+  "connection",
+  globalThis.navigator ?? {}
+);
 
-test("navigator.connection", () => {
-  console.debug("navigator.connection", {
-    downlink: navigator.connection.downlink,
-    downlinkMax: navigator.connection.downlinkMax,
-    effectiveType: navigator.connection.effectiveType,
-    rtt: navigator.connection.rtt,
-    type: navigator.connection.type,
+test("navigatorConnection", () => {
+  console.debug("navigatorConnection", {
+    downlink: navigatorConnection.downlink,
+    downlinkMax: navigatorConnection.downlinkMax,
+    effectiveType: navigatorConnection.effectiveType,
+    rtt: navigatorConnection.rtt,
+    type: navigatorConnection.type,
   });
-  assert(navigator.connection);
+  assert(navigatorConnection);
 });
 
-test("navigator.connection.downlink", () => {
-  assert(navigator.connection.downlink);
+test("navigatorConnection.downlink", () => {
+  assert(navigatorConnection.downlink);
 });
 
-test("navigator.connection.downlinkMax", () => {
-  assert(navigator.connection.downlinkMax);
+test("navigatorConnection.downlinkMax", () => {
+  assert(navigatorConnection.downlinkMax);
 });
 
-test("navigator.connection.effectiveType", () => {
-  assert(navigator.connection.effectiveType);
+test("navigatorConnection.effectiveType", () => {
+  assert(navigatorConnection.effectiveType);
 });
 
-test("navigator.connection.rtt", () => {
-  assert(navigator.connection.rtt);
+test("navigatorConnection.rtt", () => {
+  assert(navigatorConnection.rtt);
 });
 
-test("navigator.connection.type", () => {
-  assert(navigator.connection.type);
+test("navigatorConnection.type", () => {
+  assert(navigatorConnection.type);
 });
