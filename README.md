@@ -1,4 +1,4 @@
-# [Network Information API] polyfill
+# Network Information API polyfill
 
 🔌 [`navigator.connection`] polyfill for anywhere
 
