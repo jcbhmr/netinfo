@@ -16,7 +16,7 @@
 🧅 Works in Bun
 
 👀 Looking for `navigator.connection.saveData`? Check out the related [Save Data
-API polyfill at @webfill/savedata].
+API] polyfill at [@webfill/savedata].
 
 ## Installation
 
@@ -151,11 +151,14 @@ If you can figure out a way around this problem, I'd be very grateful! ❤️
 [`navigator.connection`]: https://developer.mozilla.org/en-US/docs/Web/API/NetworkInformation
 [HTML System state and capabilities]: https://html.spec.whatwg.org/multipage/system-state.html
 [@webfill/html-system-state]: https://github.com/webfill/html-system-state
-[Save Data API polyfill at @webfill/savedata]: https://github.com/webfill/savedata
+[save data api]: https://wicg.github.io/savedata/
+[@webfill/savedata]: https://github.com/webfill/savedata
 [nodejs/node#39540]: https://github.com/nodejs/node/issues/39540
 [Vitest]: https://vitest.dev/
 [@vitest/web-worker]: https://github.com/vitest-dev/vitest/tree/main/packages/web-worker#readme
 [esm.sh]: https://esm.sh/
 [esm.run]: https://esm.run/
 [ponyfill]: https://ponyfill.com/
+[pnpm]: https://pnpm.io/
+[Yarn]: https://yarnpkg.com/
 <!-- prettier-ignore-end -->
