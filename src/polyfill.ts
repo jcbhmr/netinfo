@@ -1,17 +1,24 @@
 /// <reference lib="webworker" />
-import ConnectionType_ from "./ConnectionType.js";
-import NavigatorNetworkInformation_ from "./NavigatorNetworkInformation.default.js";
+import * as M from "./ponyfill.js";
 
 declare global {
-  type ConnectionType = ConnectionType_;
-  type NavigatorNetworkInformation = NavigatorNetworkInformation_;
-  interface Navigator extends NavigatorNetworkInformation {}
-  interface WorkerNavigator extends NavigatorNetworkInformation {}
+  type ConnectionType = M.ConnectionType;
+  type EffectiveConnectionType = M.EffectiveConnectionType;
+  type Megabit = M.Megabit;
+  type Millisecond = M.Millisecond;
+  type NavigatorNetworkInformation = M.NavigatorNetworkInformation;
+  type NetworkInformation = M.NetworkInformation;
+
+  var NavigatorNetworkInformation: typeof M.NavigatorNetworkInformation;
+  var NetworkInformation: typeof M.NetworkInformation;
+
+  interface Navigator extends M.NavigatorNetworkInformation {}
+  interface WorkerNavigator extends M.NavigatorNetworkInformation {}
 }
 
 if (typeof Navigator !== "undefined") {
   const s = Object.getOwnPropertyDescriptors(
-    NavigatorNetworkInformation_
+    M.NavigatorNetworkInformation
   ) as any;
   delete s.name;
   delete s.length;
@@ -19,7 +26,7 @@ if (typeof Navigator !== "undefined") {
   Object.defineProperties(Navigator, s);
 
   const p = Object.getOwnPropertyDescriptors(
-    NavigatorNetworkInformation_.prototype
+    M.NavigatorNetworkInformation.prototype
   ) as any;
   delete p.constructor;
   delete p[Symbol.toStringTag];
@@ -27,7 +34,7 @@ if (typeof Navigator !== "undefined") {
 }
 if (typeof WorkerNavigator !== "undefined") {
   const s = Object.getOwnPropertyDescriptors(
-    NavigatorNetworkInformation_
+    M.NavigatorNetworkInformation
   ) as any;
   delete s.name;
   delete s.length;
@@ -36,7 +43,7 @@ if (typeof WorkerNavigator !== "undefined") {
   Object.defineProperties(WorkerNavigator, s);
 
   const p = Object.getOwnPropertyDescriptors(
-    NavigatorNetworkInformation_.prototype
+    M.NavigatorNetworkInformation.prototype
   ) as any;
   delete p.constructor;
   delete p[Symbol.toStringTag];

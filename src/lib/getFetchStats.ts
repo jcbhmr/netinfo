@@ -4,35 +4,50 @@ interface FetchStats {
   getLength: number;
 }
 
-async function getFetchStats(url: string): Promise<FetchStats> {
+async function getFetchStats(
+  url: string,
+  options: { signal?: AbortSignal } = {}
+): Promise<FetchStats> {
+  const { signal } = options;
+
   let headTime = 0;
   try {
     const start = performance.now();
     const response = await fetch(url, {
       method: "HEAD",
-      cache: "no-cache",
+      cache: "no-store",
+      signal,
     });
     const end = performance.now();
     headTime = Math.round(end - start);
   } catch (error) {
-    console.debug(error);
+    if (error?.name === "AbortError") {
+      throw error;
+    } else {
+      console.debug(error);
+    }
   }
 
   let getTime = 0;
   let getLength = 0;
   try {
+    const start = performance.now();
     const response = await fetch(url, {
       method: "GET",
-      cache: "no-cache",
+      cache: "no-store",
+      signal,
     });
-    const start = performance.now();
     const buffer = await response.arrayBuffer();
     const end = performance.now();
-    getTime = Math.round(end - start);
+    getTime = Math.max(Math.round(end - start) - headTime * 0.6, 1);
     getLength =
       parseInt(response.headers.get("Content-Length")) || buffer.byteLength;
   } catch (error) {
-    console.debug(error);
+    if (error?.name === "AbortError") {
+      throw error;
+    } else {
+      console.debug(error);
+    }
   }
 
   return { headTime, getTime, getLength };

@@ -1,4 +1,4 @@
-import NetworkInformation from "./NetworkInformation.default.js";
+import NetworkInformation from "./NetworkInformation.js";
 
 const connection = new WeakMap<any, NetworkInformation>();
 const NavigatorNetworkInformation = {
