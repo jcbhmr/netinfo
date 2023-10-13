@@ -10,26 +10,11 @@
   },
   "exports": {
     ".": {
-      "browser": "./dist/polyfill.browser.js",
-      "default": "./dist/polyfill.default.js"
+      "browser": "./dist/polyfill.js",
+      "default": "./dist/polyfill.js"
     },
-    "./NavigatorNetworkInformation.js": {
-      "browser": "./dist/NavigatorNetworkInformation.browser.js",
-      "default": "./dist/NavigatorNetworkInformation.default.js"
-    },
-    "./NetworkInformation.js": {
-      "browser": "./dist/NetworkInformation.browser.js",
-      "default": "./dist/NetworkInformation.default.js"
-    },
-    "./polyfill.js": {
-      "browser": "./dist/polyfill.browser.js",
-      "default": "./dist/polyfill.default.js"
-    },
-    "./ponyfill.js": {
-      "browser": "./dist/ponyfill.browser.js",
-      "default": "./dist/ponyfill.default.js"
-    },
-    "./*.js": "./dist/*.js"
+    "./*.js": "./dist/*.js",
+    "./package.json": "./package.json"
   },
   "files": [
     "dist"
@@ -41,13 +26,17 @@
     "format": "prettier -w .",
     "lint": "tsc --noEmit",
     "pretest": "npm run build",
-    "test": "node --test"
+    "test": "node --test",
+    "pretest:browser": "npm run build",
+    "test:browser": "vite"
   },
   "devDependencies": {
     "@types/node": "^20.8.4",
     "http-server": "^14.1.1",
     "prettier": "^3.0.3",
     "typedoc": "^0.25.2",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vite": "^4.4.11",
+    "vite-plugin-directory-index": "^2.1.2"
   }
 }

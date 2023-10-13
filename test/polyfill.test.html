@@ -1,0 +1,14 @@
+<script type="module">
+  import assert from "https://esm.run/assert";
+  import "../dist/polyfill.js";
+
+  setInterval(() => {
+    console.debug("navigator.connection", {
+      downlink: navigator.connection.downlink,
+      downlinkMax: navigator.connection.downlinkMax,
+      effectiveType: navigator.connection.effectiveType,
+      rtt: navigator.connection.rtt,
+      type: navigator.connection.type,
+    });
+  }, 1000);
+</script>

@@ -1,10 +1,15 @@
 import test from "node:test";
 import assert from "node:assert";
+import {
+  NavigatorNetworkInformation,
+  NetworkInformation,
+} from "../dist/ponyfill.js";
 
-globalThis.Navigator ??= class Navigator {};
-globalThis.navigator ??= new Navigator();
-
-await import("../dist/polyfill.js");
+/** @type {NavigatorNetworkInformation} */
+let navigator;
+navigator ??= globalThis.navigator;
+navigator ??= Object.create(NavigatorNetworkInformation.prototype);
+navigator.connection ??= Object.create(NetworkInformation.prototype);
 
 test("navigator.connection", () => {
   console.debug("navigator.connection", {
