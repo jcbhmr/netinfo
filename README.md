@@ -155,4 +155,7 @@ If you can figure out a way around this problem, I'd be very grateful! ❤️
 [nodejs/node#39540]: https://github.com/nodejs/node/issues/39540
 [Vitest]: https://vitest.dev/
 [@vitest/web-worker]: https://github.com/vitest-dev/vitest/tree/main/packages/web-worker#readme
+[esm.sh]: https://esm.sh/
+[esm.run]: https://esm.run/
+[ponyfill]: https://ponyfill.com/
 <!-- prettier-ignore-end -->
