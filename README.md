@@ -50,15 +50,9 @@ or [esm.run]:
 ```
 
 ⚠️ This polyfill requires an existing `Navigator`/`navigator` class/object to
-mutate and add the Network Information APIs to. If you're using Deno, Bun, or
-the browser, this is already provided for you. If you're using Node.js, you'll
-need to import an [HTML System state and capabilities] polyfill like
-[@webfill/html-system-state] to provide the global `Navigator`/`navigator`.
-
-<sup>🚀 If you're interested in seeing the `navigator` object included in
-Node.js core, upvote & participate in the discussion in
-[nodejs/node#39540].</sup> \
-**[🌟 Node.js v21 looks like it will have a global `navigator` object!](https://github.com/nodejs/node/pull/49870)**
+mutate and add the Network Information APIs to. If you're using Deno, Bun, the
+browser, or Node.js v21+ this is already available. If not, you'll need to add
+a `Navigator`/`navigator` polyfill.
 
 ## Usage
 
